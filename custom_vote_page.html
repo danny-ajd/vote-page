@@ -17,7 +17,6 @@
     <h2 id="lyric-label">이 가사를 추천하시겠습니까?</h2>
     <button class="yes" onclick="submitVote('예')">예</button>
     <button class="no" onclick="submitVote('아니오')">아니오</button>
-    <p id="response-message" style="margin-top:20px;"></p>
   </div>
 
   <script>
@@ -27,22 +26,11 @@
     document.getElementById('lyric-label').innerText = `${lyricNumber}번 가사를 추천하시겠습니까?`;
 
     function submitVote(choice) {
-      const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLScqib8rbEO50-KzABPURmwAV8pemnePyCXEcIGU1mNDMKjlYA/formResponse';
-      const formData = new FormData();
-
-      // 실제 entry ID로 변경 필요
-      formData.append('entry.2017107205', choice); // 예/아니오
-      formData.append('entry.96020956', lyricNumber); // 가사 번호
-
-      fetch(formUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: formData
-      }).then(() => {
-        document.getElementById('response-message').innerText = '투표가 완료되었습니다! 감사합니다.';
-      }).catch(() => {
-        document.getElementById('response-message').innerText = '투표 중 오류가 발생했습니다.';
-      });
+      const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLScqib8rbEO50-KzABPURmwAV8pemnePyCXEcIGU1mNDMKjlYA/viewform';
+      const entryYesNo = 'entry.2017107205=' + encodeURIComponent(choice);
+      const entryLyric = 'entry.96020956=' + encodeURIComponent(lyricNumber);
+      const fullUrl = `${formUrl}?usp=pp_url&${entryYesNo}&${entryLyric}`;
+      window.location.href = fullUrl;
     }
   </script>
 </body>
